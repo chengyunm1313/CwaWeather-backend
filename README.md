@@ -6,6 +6,8 @@
 
 - ✅ 串接 CWA 氣象資料開放平台
 - ✅ 取得高雄市 36 小時天氣預報
+- ✅ 取得全縣市 36 小時天氣預報（locationName 空值）
+- ✅ 取得特定縣市 36 小時天氣預報（指定 locationName）
 - ✅ 環境變數管理
 - ✅ RESTful API 設計
 - ✅ CORS 支援
@@ -73,6 +75,8 @@ GET /
   "message": "歡迎使用 CWA 天氣預報 API",
   "endpoints": {
     "kaohsiung": "/api/weather/kaohsiung",
+    "all": "/api/weather/all",
+    "city": "/api/weather/city/:cityName",
     "health": "/api/health"
   }
 }
@@ -120,6 +124,92 @@ GET /api/weather/kaohsiung
       }
     ]
   }
+}
+```
+
+### 4. 取得特定縣市天氣預報
+
+```
+GET /api/weather/city/:cityName
+```
+
+`cityName` 需使用以下任一值（與 CWA locationName 一致）：
+
+```
+基隆市、臺北市、新北市、桃園市、新竹市、新竹縣、苗栗縣、臺中市、
+彰化縣、南投縣、雲林縣、嘉義市、嘉義縣、臺南市、高雄市、屏東縣、
+宜蘭縣、花蓮縣、臺東縣、澎湖縣、金門縣、連江縣
+```
+
+回應範例（以臺北市為例）：
+
+```json
+{
+  "success": true,
+  "data": {
+    "city": "臺北市",
+    "updateTime": "資料更新時間說明",
+    "forecasts": [
+      {
+        "startTime": "2025-09-30 18:00:00",
+        "endTime": "2025-10-01 06:00:00",
+        "weather": "多雲短暫陣雨",
+        "rain": "30%",
+        "minTemp": "24°C",
+        "maxTemp": "31°C",
+        "comfort": "稍悶",
+        "windSpeed": "偏東風 2-3 級"
+      }
+    ]
+  }
+}
+```
+
+### 5. 取得全部縣市天氣預報
+
+```
+GET /api/weather/all
+```
+
+回應範例（僅截取部分縣市）：
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "city": "高雄市",
+      "updateTime": "資料更新時間說明",
+      "forecasts": [
+        {
+          "startTime": "2025-09-30 18:00:00",
+          "endTime": "2025-10-01 06:00:00",
+          "weather": "多雲時晴",
+          "rain": "10%",
+          "minTemp": "25°C",
+          "maxTemp": "32°C",
+          "comfort": "悶熱",
+          "windSpeed": "偏南風 3-4 級"
+        }
+      ]
+    },
+    {
+      "city": "臺北市",
+      "updateTime": "資料更新時間說明",
+      "forecasts": [
+        {
+          "startTime": "2025-09-30 18:00:00",
+          "endTime": "2025-10-01 06:00:00",
+          "weather": "多雲短暫陣雨",
+          "rain": "30%",
+          "minTemp": "24°C",
+          "maxTemp": "31°C",
+          "comfort": "稍悶",
+          "windSpeed": "偏東風 2-3 級"
+        }
+      ]
+    }
+  ]
 }
 ```
 
